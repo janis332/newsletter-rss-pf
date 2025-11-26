@@ -1,0 +1,9 @@
+{
+  "name": "newsletter-rss-generator",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "dotenv": "latest",
+    "openai": "latest"
+  }
+}
