@@ -5,6 +5,9 @@ on:
     - cron: "0 6 * * 1"   # jeden Montag 06:00 UTC
   workflow_dispatch:
 
+  env:
+  TZ: Europe/Berlin   # <--- add this (or your timezone)
+
 permissions:
   contents: write
   pages: write
