@@ -24,7 +24,7 @@ jobs:
       - name: Run generator
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: npm run generate
+        run: run: node generate-rss.js
 
       - name: Commit & push changes
         run: |
