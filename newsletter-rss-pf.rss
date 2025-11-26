@@ -1,12 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>My Weekly Newsletter</title>
-    <link>https://example.com</link>
-    <description>RSS Feed generated automatically</description>
+    <title>Weekly Newsletter</title>
+    <link>https://janis332.github.io/newsletter-rss-pf/</link>
+    <description>Automatically generated newsletter</description>
+
     <item>
-      <title>Initial Placeholder</title>
-      <description>Hello!</description>
+      <title><![CDATA[Winterliche Microgreens: Vielfalt auf dem Teller]]></title>
+      <description><![CDATA[Erfahren Sie alles über die besten Microgreens für den Winter, ihre Anbautechniken und kulinarischen Einsatzmöglichkeiten.]]></description>
+      <pubDate>Wed, 26 Nov 2025 08:18:11 GMT</pubDate>
+      <guid isPermaLink="false">1764145091646</guid>
+      <content:encoded><![CDATA[Der Winter ist die perfekte Zeit, um Microgreens und Keimlinge in Ihrer Küche zu integrieren. Diese kleinen Nährstoffbomben gedeihen auch in der kalten Jahreszeit und bringen frische Aromen auf Ihre Teller. Besonders empfehlenswert sind auf Wintersorten wie Senf, Rucola und Radieschen, die in den kühleren Monaten kräftigere Geschmäcker entwickeln. Hanfsprossen sind ebenfalls eine hervorragende Wahl, da sie das ganze Jahr über angebaut werden können und eine nussige Note hinzufügen.
+
+Die idealen Bedingungen für das Wachstum von Microgreens im Winter umfassen eine Temperatur zwischen 18 und 22 Grad Celsius. Achten Sie darauf, dass sie ausreichend Licht erhalten – entweder durch einhellige Fenster oder spezielle Pflanzenlichter, die täglich mindestens 12 bis 16 Stunden eingeschaltet sein sollten. Eine Substrathöhe von 2 bis 5 cm reicht aus, um die Wurzeln ausreichend zu stabilisieren und eine gleichmäßige Feuchtigkeit zu gewährleisten.
+
+Keimtipps für den Winter sind, die Samen vor der Aussaat für einige Stunden zu wässern, um die Keimung zu fördern. Halten Sie die Oberfläche feucht, aber vermeiden Sie Staunässe, da diese Fäulnis verursachen kann. Achten Sie außerdem darauf, dass die Temperaturen während des Anbaus konstant bleiben, um ein gesundes Wachstum zu unterstützen.
+
+Ein häufiger Fehler beim Anbau von Microgreens ist Überbewässerung. Prüfen Sie regelmäßig die Feuchtigkeit des Substrats. Eine zu hohe Luftfeuchtigkeit kann zu Schimmelbildung führen. Nutzen Sie die frischen Microgreens nicht nur als Garnierung, sondern experimentieren Sie auch mit ihrer Verwendung in Salaten, Sandwiches und Smoothies, um Ihren winterlichen Gerichten eine gesunde und geschmackliche Note zu verleihen.]]></content:encoded>
     </item>
+
+  
+    <item>
+      <title><![CDATA[Microgreens und Keimlinge im Winter]]></title>
+      <description><![CDATA[Entdecken Sie die Vorteile von Microgreens und Keimlingen in der kalten Jahreszeit.]]></description>
+      <pubDate>Wed, 26 Nov 2025 08:18:52 GMT</pubDate>
+      <guid isPermaLink="false">1764145132134</guid>
+      <content:encoded><![CDATA[In der kalten Winterzeit sind Microgreens und Keimlinge eine hervorragende Möglichkeit, frische Vitamine und Nährstoffe ins Haus zu bringen. Diese kleinen Pflanzen sind nicht nur reich an Antioxidantien, sondern können auch ganz einfach in der eigenen Wohnung angebaut werden. Besonders empfehlenswert sind zurzeit Sorten wie Rucola, Radieschen und Kresse, die sich durch ihre Robustheit und ihr schnelles Wachstum auszeichnen. Hanfsprossen sind ebenfalls eine sehr gute Wahl, da sie das ganze Jahr über gut gedeihen und sich ideal als nahrhafte Ergänzung in Salaten und Smoothies eignen.
+
+Für den Anbau von Microgreens solltest du darauf achten, dass die Substratstärke etwa 2 bis 3 cm beträgt, um eine optimale Entwicklung der Wurzeln zu gewährleisten. Verwende am besten ein leichtes, gut durchlüftetes Substrat, um Staunässe zu vermeiden. In dieser Jahreszeit ist es wichtig, die Licht- und Temperaturverhältnisse im Auge zu behalten. Stelle deine Keimlinge an einen hellen Ort mit mindestens 12 bis 14 Stunden Licht pro Tag und halte die Raumtemperatur zwischen 18 und 22 Grad Celsius.
+
+Ein häufiger Fehler beim Anbau von Microgreens ist das Überwässern. Achte darauf, dass die Erde leicht feucht, aber nicht durchnässt ist. Zu viel Wasser kann Schimmelbildung begünstigen und die Pflanzen schädigen. Ein weiterer Tipp ist, die Keimlinge nach der ersten Woche mit einer leichten Dosis Nährlösung zu düngen, um ihr Wachstum zu fördern.
+
+Die kulinarische Verwendung von Microgreens und Hanfsprossen ist vielfältig. Sie eignen sich hervorragend als Garnitur für Suppen und Hauptgerichte oder als aromatische Zutat in Salaten und Sandwiches. Ihre frischen und oft intensiven Aromen verleihen jedem Gericht das gewisse Etwas und können helfen, die winterliche Küchensaison aufzupeppen. Nutze die Kraft der Keimlinge, um deine Wintergerichte gesünder und schmackhafter zu gestalten.]]></content:encoded>
+    </item>
+
   </channel>
 </rss>
