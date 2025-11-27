@@ -1,6 +1,11 @@
 name: Generate Weekly RSS
 
 on:
+  push:
+    paths:
+      - "generate-rss.js"
+      - "package.json"
+      - ".github/workflows/**"
   schedule:
     - cron: "0 6 * * 1"
   workflow_dispatch:
@@ -64,4 +69,5 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deploy-pages
         uses: actions/deploy-pages@v4
+
 
