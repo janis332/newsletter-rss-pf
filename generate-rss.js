@@ -6,31 +6,36 @@ async function run() {
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
-    throw new Error("OPENAI_API_KEY is not set in GitHub Secrets or .env");
+    throw new Error("OPENAI_API_KEY is not set in .env");
   }
 
   const client = new OpenAI({ apiKey });
 
-  // aktuelles Datum für saisonale Inhalte
   const today = new Date().toISOString().slice(0, 10);
 
-  // Prompt für deinen Newsletter
-  const prompt = `
+  // --- REQUEST CONTENT FROM AI ---
+  const completion = await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+      {
+        role: "user",
+        content: `
 Erstelle einen wöchentlichen Newsletter ausschließlich als reines JSON-Objekt.
 
 Aktuelles Datum: ${today}
-Nutze dieses Datum, um die passende Jahreszeit für Microgreens, Hanfsprossen, Keimlinge und Substratempfehlungen zu bestimmen.
+Nutze dieses Datum, um die passende Jahreszeit und damit saisonale Empfehlungen abzuleiten.
 
 Thema:
-Microgreens, Hanf, saisonale Sorten, optimale Substratstärken, Lichtbedingungen, Keimtipps, häufige Fehler und kulinarische Verwendung.
+Microgreens, Keimlinge, Hanfsprossen, saisonale Sortenempfehlungen, ideale Substratstärken, aktuelle Licht- & Temperaturanforderungen, Keimtipps, Fehlerquellen und kulinarische Verwendung.
 
 Format:
-Gib NUR dieses JSON zurück:
+Gib NUR dieses JSON-Objekt zurück:
 
 {
   "title": "string – deutscher kurzer Titel",
-  "summary": "string – kurze Zusammenfassung",
-  "content": "string – ausführlicher deutscher Text (3–6 Absätze) basierend auf der Saison"
+  "subtitle": "string – kurzer deutscher Untertitel",
+  "summary": "string – kurze Zusammenfassung des Themas",
+  "content": "string – HTML-formatierter deutscher Text (3–6 Absätze mit <h2>, <p>, <ul>, <li>)"
 }
 
 Regeln:
@@ -38,19 +43,17 @@ Regeln:
 - Keine Backticks.
 - Nur das JSON-Objekt.
 - Inhalt vollständig auf Deutsch.
-- Saison abhängig vom Datum.
-- Inhalte sollen jede Woche variieren.
-`;
-
-  // Anfrage an OpenAI
-  const completion = await client.chat.completions.create({
-    model: "gpt-4o-mini",
-    messages: [{ role: "user", content: prompt }]
+- Saison abhängig vom übergebenen Datum.
+- content MUSS HTML-Struktur enthalten.
+- Inhalt soll jedes Mal variieren.
+`
+      }
+    ]
   });
 
   let raw = completion.choices[0].message.content.trim();
 
-  // Markdown-Schutz, falls Modell trotzdem ```json zurückgibt
+  // Cleanup falls Model Codefences erzeugt
   raw = raw.replace(/```json/gi, "");
   raw = raw.replace(/```/g, "");
   raw = raw.trim();
@@ -59,30 +62,33 @@ Regeln:
   try {
     data = JSON.parse(raw);
   } catch (err) {
-    console.error("❌ JSON konnte nicht geparst werden. Rohdaten:\n", raw);
+    console.error("Failed to parse JSON. Raw response:\n", raw);
     throw err;
   }
 
-  // Neues RSS-Item
+  // --- BUILD NEWSLETTER ITEM ---
   const newItem = `
     <item>
       <title><![CDATA[${data.title}]]></title>
       <description><![CDATA[${data.summary}]]></description>
       <pubDate>${new Date().toUTCString()}</pubDate>
       <guid isPermaLink="false">${Date.now()}</guid>
-      <content:encoded><![CDATA[${data.content}]]></content:encoded>
+      <content:encoded><![CDATA[
+        <h2>${data.subtitle}</h2>
+        ${data.content}
+      ]]></content:encoded>
     </item>
 `;
 
+  // --- LOAD EXISTING feed.xml ---
   const feedPath = "feed.xml";
   let oldFeed = "";
 
-  // bestehendes RSS laden
   if (fs.existsSync(feedPath)) {
     oldFeed = fs.readFileSync(feedPath, "utf-8");
   }
 
-  // Wenn kein feed existiert → neuen erstellen
+  // --- CREATE NEW RSS IF NONE EXISTS ---
   if (!oldFeed) {
     const freshRSS = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
@@ -95,18 +101,19 @@ ${newItem}
 </rss>`;
 
     fs.writeFileSync(feedPath, freshRSS);
-    console.log("✅ Neuer RSS-Feed erstellt!");
+    console.log("Created NEW RSS feed with the first entry!");
     return;
   }
 
-  // bestehendes RSS erweitern
+  // --- APPEND NEW ITEM TO EXISTING FEED ---
   const updatedRSS = oldFeed.replace(
     /<\/channel>\s*<\/rss>/,
     `${newItem}\n  </channel>\n</rss>`
   );
 
   fs.writeFileSync(feedPath, updatedRSS);
-  console.log("✅ Neuer Eintrag zum RSS hinzugefügt!");
+  console.log("Appended new newsletter to feed.xml!");
 }
 
+// Run
 run().catch(console.error);
