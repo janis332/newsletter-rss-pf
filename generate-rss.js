@@ -10,7 +10,6 @@ async function run() {
   }
 
   const client = new OpenAI({ apiKey });
-
   const today = new Date().toISOString().slice(0, 10);
 
   // --- REQUEST CONTENT FROM AI ---
@@ -71,10 +70,9 @@ CONTENT-ANWEISUNGEN:
 
   let raw = completion.choices[0].message.content.trim();
 
-  // Remove accidental Markdown fences
+  // Cleanup accidental formatting
   raw = raw.replace(/```json/gi, "");
-  raw = raw.replace(/```/g, "");
-  raw = raw.trim();
+  raw = raw.replace(/```/g, "").trim();
 
   let data;
   try {
@@ -84,7 +82,7 @@ CONTENT-ANWEISUNGEN:
     throw err;
   }
 
-  // --- BUILD NEWSLETTER ITEM ---
+  // --- BUILD NEW RSS ITEM ---
   const newItem = `
     <item>
       <title><![CDATA[${data.title}]]></title>
@@ -96,19 +94,10 @@ CONTENT-ANWEISUNGEN:
         ${data.content}
       ]]></content:encoded>
     </item>
-`;
+  `;
 
-  // --- LOAD EXISTING feed.xml ---
-  const feedPath = "feed.xml";
-  let oldFeed = "";
-
-  if (fs.existsSync(feedPath)) {
-    oldFeed = fs.readFileSync(feedPath, "utf-8");
-  }
-
-  // --- CREATE NEW RSS IF NONE EXISTS ---
-  if (!oldFeed) {
-    const freshRSS = `<?xml version="1.0" encoding="UTF-8"?>
+  // --- ALWAYS CREATE A NEW RSS FILE (overwrite old one) ---
+  const freshRSS = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Weekly Newsletter</title>
@@ -118,19 +107,8 @@ ${newItem}
   </channel>
 </rss>`;
 
-    fs.writeFileSync(feedPath, freshRSS);
-    console.log("Created NEW RSS feed with first entry!");
-    return;
-  }
-
-  // --- APPEND NEW ITEM ---
-  const updatedRSS = oldFeed.replace(
-    /<\/channel>\s*<\/rss>/,
-    `${newItem}\n  </channel>\n</rss>`
-  );
-
-  fs.writeFileSync(feedPath, updatedRSS);
-  console.log("Appended new newsletter to feed.xml!");
+  fs.writeFileSync("feed.xml", freshRSS);
+  console.log("Saved current newsletter to feed.xml (old entries removed).");
 }
 
 run().catch(console.error);
