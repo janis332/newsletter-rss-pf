@@ -26,26 +26,44 @@ Aktuelles Datum: ${today}
 Nutze dieses Datum, um die passende Jahreszeit und damit saisonale Empfehlungen abzuleiten.
 
 Thema:
-Microgreens, Keimlinge, Hanfsprossen, saisonale Sortenempfehlungen, ideale Substratstärken, aktuelle Licht- & Temperaturanforderungen, Keimtipps, Fehlerquellen und kulinarische Verwendung.
+Microgreens, Keimlinge, Hanfsprossen, saisonale Sorten, Substratstärken, Licht- & Temperaturtipps, Keimung, Fehlerquellen, kulinarische Anwendungen.
 
-Format:
-Gib NUR dieses JSON-Objekt zurück:
+FORMAT — GIB NUR FOLGENDES JSON OBJEKT AUS:
 
 {
-  "title": "string – deutscher kurzer Titel",
-  "subtitle": "string – kurzer deutscher Untertitel",
-  "summary": "string – kurze Zusammenfassung des Themas",
-  "content": "string – HTML-formatierter deutscher Text (3–6 Absätze mit <h2>, <p>, <ul>, <li>)"
+  "title": "kurzer deutscher Titel",
+  "subtitle": "ein kurzer deutscher Untertitel",
+  "summary": "1–2 Sätze Zusammenfassung",
+  "content": "HTML-Inhalt (siehe erlaubte Tags)"
 }
 
-Regeln:
-- Keine Markdown-Formatierung.
-- Keine Backticks.
-- Nur das JSON-Objekt.
-- Inhalt vollständig auf Deutsch.
-- Saison abhängig vom übergebenen Datum.
-- content MUSS HTML-Struktur enthalten.
-- Inhalt soll jedes Mal variieren.
+HTML-REGELN (sehr wichtig — MailerLite erlaubt nur diese!):
+ERLAUBTE TAGS:
+- <p>
+- <strong>
+- <em>
+- <br>
+- <ul>
+- <li>
+
+EMOJIS ERLAUBT ✔
+
+NICHT ERLAUBT (NICHT BENUTZEN):
+- <h1> bis <h6>
+- <div>
+- <span>
+- <style>
+- <img>
+- keine Klassen, kein CSS
+
+CONTENT-ANWEISUNGEN:
+- HTML unbedingt nur mit erlaubten Tags erzeugen.
+- 3–6 Absätze + gerne ein <ul><li>-Block.
+- Überschriften bitte als:
+  <p><strong>Mein Titel</strong></p>
+- KEINE Markdown-Formatierung.
+- KEINE Backticks.
+- GIB NUR DAS JSON OBJEKT AUS — NICHTS ANDERES.
 `
       }
     ]
@@ -53,7 +71,7 @@ Regeln:
 
   let raw = completion.choices[0].message.content.trim();
 
-  // Cleanup falls Model Codefences erzeugt
+  // Remove accidental Markdown fences
   raw = raw.replace(/```json/gi, "");
   raw = raw.replace(/```/g, "");
   raw = raw.trim();
@@ -74,7 +92,7 @@ Regeln:
       <pubDate>${new Date().toUTCString()}</pubDate>
       <guid isPermaLink="false">${Date.now()}</guid>
       <content:encoded><![CDATA[
-        <h2>${data.subtitle}</h2>
+        <p><strong>${data.subtitle}</strong></p>
         ${data.content}
       ]]></content:encoded>
     </item>
@@ -101,11 +119,11 @@ ${newItem}
 </rss>`;
 
     fs.writeFileSync(feedPath, freshRSS);
-    console.log("Created NEW RSS feed with the first entry!");
+    console.log("Created NEW RSS feed with first entry!");
     return;
   }
 
-  // --- APPEND NEW ITEM TO EXISTING FEED ---
+  // --- APPEND NEW ITEM ---
   const updatedRSS = oldFeed.replace(
     /<\/channel>\s*<\/rss>/,
     `${newItem}\n  </channel>\n</rss>`
@@ -115,5 +133,5 @@ ${newItem}
   console.log("Appended new newsletter to feed.xml!");
 }
 
-// Run
 run().catch(console.error);
+
